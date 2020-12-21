@@ -1,16 +1,26 @@
 package com.wshoto.design.chain.demo3;
 
+import com.wshoto.design.chain.demo3.util.ClassUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
         /*new HandlerChain()
                 .add(new FlowHandler())
                 .add(new SessionHandler())
                 .handler(new Request(),new Response());*/
+        List<Handler> dogList = new ArrayList<>();
+        List<Class> classList = ClassUtil.getAllInterfaceAchieveClass(Handler.class);
+        for (Class c : classList) {
+            dogList.add((Handler) c.newInstance());
+        }
 
+        for (Handler d : dogList) {
+            System.out.println(d.getClass());
+        }
 
     }
 
