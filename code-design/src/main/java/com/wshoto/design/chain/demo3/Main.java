@@ -8,11 +8,11 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException {
-        /*new HandlerChain()
-                .add(new FlowHandler())
-                .add(new SessionHandler())
-                .handler(new Request(),new Response());*/
-        List<Handler> dogList = new ArrayList<>();
+        new HandlerChain()
+                /*.add(new FlowHandler())
+                .add(new SessionHandler())*/
+                .handler(new Request(),new Response());
+        /*List<Handler> dogList = new ArrayList<>();
         List<Class> classList = ClassUtil.getAllInterfaceAchieveClass(Handler.class);
         for (Class c : classList) {
             dogList.add((Handler) c.newInstance());
@@ -20,7 +20,7 @@ public class Main {
 
         for (Handler d : dogList) {
             System.out.println(d.getClass());
-        }
+        }*/
 
     }
 
@@ -54,10 +54,24 @@ class HandlerChain implements IHandlerChain {
         current = 0;
     }*/
 
-    public HandlerChain add(Handler handler) {
-        handlerList.add(handler);
-        return this;
+     {
+        ClassUtil.getAllInterfaceAchieveClass(Handler.class).forEach(c->{
+            try {
+                handlerList.add((Handler) c.newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
+
+    /*public HandlerChain add(Handler handler) {
+        handlerList.add(handler);
+
+        ClassUtil.getAllInterfaceAchieveClass(Handler.class);
+        return this;
+    }*/
 
     @Override
     public void handler(Request request, Response response) {
