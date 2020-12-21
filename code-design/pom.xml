@@ -11,7 +11,7 @@
     <groupId>com.wshoto</groupId>
     <artifactId>design</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>design</name>
+    <name>code-design</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

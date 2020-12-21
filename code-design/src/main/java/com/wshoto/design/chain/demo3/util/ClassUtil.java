@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ * @author AGoodMan
+ */
 public class ClassUtil {
 
     /**
@@ -48,7 +51,7 @@ public class ClassUtil {
     private static List<Class> getAllClassByPath(String packageName) {
         List<Class> list = new ArrayList<>();
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        String path = packageName.replace(',', '/');
+        String path = packageName.replace('.', '/');
         try {
             List<File> files = new ArrayList<>();
             Enumeration<URL> enumeration = contextClassLoader.getResources(path);
@@ -93,57 +96,5 @@ public class ClassUtil {
             }
         }
         return list;
-    }
-}
-
-
-/*class Main {
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
-        List<Dog> dogList = new ArrayList<>();
-        List<Class> classList = ClassUtil.getAllInterfaceAchieveClass(Dog.class);
-        for (Class c : classList) {
-            dogList.add((Dog) c.newInstance());
-        }
-
-        for (Dog d : dogList) {
-            System.out.println(d.getClass());
-        }
-    }
-}*/
-
-
-interface Dog {
-    void run();
-}
-
-interface Cat {
-    void run();
-}
-
-class DogImpl implements Dog {
-    @Override
-    public void run() {
-        System.out.println("跑");
-    }
-}
-
-class DogImp2 implements Dog {
-    @Override
-    public void run() {
-        System.out.println("跑跑");
-    }
-}
-
-class CatImpl implements Cat {
-    @Override
-    public void run() {
-        System.out.println("飞");
-    }
-}
-
-class CatImpl2 implements Cat {
-    @Override
-    public void run() {
-        System.out.println("飞飞");
     }
 }
