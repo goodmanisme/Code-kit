@@ -1,2 +1,1 @@
-# DesignPatterns
-Design pattern exercise
+The Code toolkit for Java
