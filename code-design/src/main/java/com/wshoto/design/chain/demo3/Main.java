@@ -8,20 +8,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException {
-        new HandlerChain()
-                /*.add(new FlowHandler())
-                .add(new SessionHandler())*/
-                .handler(new Request(),new Response());
-        /*List<Handler> dogList = new ArrayList<>();
-        List<Class> classList = ClassUtil.getAllInterfaceAchieveClass(Handler.class);
-        for (Class c : classList) {
-            dogList.add((Handler) c.newInstance());
-        }
-
-        for (Handler d : dogList) {
-            System.out.println(d.getClass());
-        }*/
-
+        new HandlerChain().handler(new Request(),new Response());
     }
 
 }
@@ -44,15 +31,8 @@ interface Handler {
 
 class HandlerChain implements IHandlerChain {
 
-    //private List<Handler> handlerList;
     List<Handler> handlerList = new ArrayList<>();
-
     private int current;
-
-    /*public HandlerChain(List<Handler> handlerList) {
-        this.handlerList = handlerList;
-        current = 0;
-    }*/
 
      {
         ClassUtil.getAllInterfaceAchieveClass(Handler.class).forEach(c->{
@@ -65,14 +45,6 @@ class HandlerChain implements IHandlerChain {
             }
         });
     }
-
-    /*public HandlerChain add(Handler handler) {
-        handlerList.add(handler);
-
-        ClassUtil.getAllInterfaceAchieveClass(Handler.class);
-        return this;
-    }*/
-
     @Override
     public void handler(Request request, Response response) {
         if (current >= handlerList.size()) {
