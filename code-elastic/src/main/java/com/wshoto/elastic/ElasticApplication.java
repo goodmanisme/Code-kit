@@ -3,6 +3,9 @@ package com.wshoto.elastic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * es深分页及条件搜索
+ */
 @SpringBootApplication
 public class ElasticApplication {
 
