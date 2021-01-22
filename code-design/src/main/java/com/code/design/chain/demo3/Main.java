@@ -1,6 +1,6 @@
-package com.wshoto.design.chain.demo3;
+package com.code.design.chain.demo3;
 
-import com.wshoto.design.chain.demo3.util.ClassUtil;
+import com.code.design.chain.demo3.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ interface IHandlerChain {
 }
 
 interface Handler {
-    void handlerRequest(Request request, Response response, IHandlerChain chain);
+    Object handlerRequest(Request request, Response response, IHandlerChain chain);
 }
 
 class HandlerChain implements IHandlerChain {
@@ -58,16 +58,16 @@ class HandlerChain implements IHandlerChain {
 class FlowHandler implements Handler {
 
     @Override
-    public void handlerRequest(Request request, Response response, IHandlerChain chain) {
-        System.out.println("跟进请求");
+    public Object handlerRequest(Request request, Response response, IHandlerChain chain) {
         chain.handler(request, response);
+        return "跟进请求";
     }
 }
 
 class SessionHandler implements Handler {
 
     @Override
-    public void handlerRequest(Request request, Response response, IHandlerChain chain) {
-        System.out.println("会话请求");
+    public Object handlerRequest(Request request, Response response, IHandlerChain chain) {
+        return "会话请求";
     }
 }

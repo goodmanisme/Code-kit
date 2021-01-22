@@ -1,4 +1,4 @@
-package com.wshoto.design.chain.demo1;
+package com.code.design.chain.demo1;
 
 public class Main {
 

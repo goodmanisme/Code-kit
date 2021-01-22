@@ -1,4 +1,4 @@
-package com.wshoto.elastic;
+package com.code.elastic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

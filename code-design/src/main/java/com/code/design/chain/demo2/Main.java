@@ -1,4 +1,4 @@
-package com.wshoto.design.chain.demo2;
+package com.code.design.chain.demo2;
 
 import java.util.ArrayList;
 import java.util.List;
