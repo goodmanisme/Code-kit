@@ -26,12 +26,12 @@ class KafkaApplicationTests {
     public void test1() {
         List<String> users = new ArrayList<>();
         List<String> departments = new ArrayList<>();
-        users.add("张三");
-        users.add("李四");
-        departments.add("市场部");
-        departments.add("外交部");
+        users.add("刘德华");
+        users.add("周华健");
+        departments.add("演出部");
+        departments.add("公关部");
         TenantMessage tenantMessage = TenantMessage.builder()
-                .tenantId("武汉支行")
+                .tenantId("上海站")
                 .action("00")
                 .seats(200)
                 .users(users)
@@ -39,14 +39,14 @@ class KafkaApplicationTests {
                 .build();
 
         DepartmentMessage departmentMessage = DepartmentMessage.builder()
-                .tenantId("武汉支行")
+                .tenantId("上海站")
                 .users(users)
                 .departments(departments)
                 .build();
 
         UserMassage userMassage = UserMassage.builder()
-                .tenantId("武汉支行")
-                .userId("张三")
+                .tenantId("上海站")
+                .userId("刘德华")
                 .build();
 
         try {
