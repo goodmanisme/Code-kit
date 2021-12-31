@@ -1,4 +1,4 @@
-package com.cloud.user.server.config;
+package com.cloud.resource.server.config;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;

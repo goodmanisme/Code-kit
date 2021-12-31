@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cloud-user-server
+    name: cloud-resource-server
   cloud:
     nacos:
       server-addr: 192.168.0.229:8848
@@ -10,4 +10,4 @@ spring:
         namespace: public
       config:
         namespace: public
-        file-extension: yml
+        file-extension: yaml
