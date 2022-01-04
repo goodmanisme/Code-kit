@@ -1,6 +1,4 @@
 package com.cloud.gateway.server.config;
-
-import com.cloud.gateway.server.route.MyCorsProcessor;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;

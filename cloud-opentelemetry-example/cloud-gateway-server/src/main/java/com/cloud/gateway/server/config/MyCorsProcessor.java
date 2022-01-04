@@ -1,4 +1,4 @@
-package com.cloud.gateway.server.route;
+package com.cloud.gateway.server.config;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;

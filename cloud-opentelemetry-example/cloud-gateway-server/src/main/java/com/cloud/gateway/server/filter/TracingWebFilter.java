@@ -29,12 +29,7 @@ public class TracingWebFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         Tracer tracer = openTelemetry.getTracer(applicationName);
-
-        Span span = tracer.spanBuilder(request.getPath().toString())
-                .setNoParent()
-                .setSpanKind(SpanKind.SERVER)
-                .setAttribute(SemanticAttributes.HTTP_METHOD, request.getMethod().name())
-                .startSpan();
+        Span span = getServerSpan(tracer,request);
 
         Scope scope = span.makeCurrent();
         exchange.getResponse().getHeaders().add("traceId", span.getSpanContext().getTraceId());
@@ -45,5 +40,12 @@ public class TracingWebFilter implements WebFilter {
                     scope.close();
                     span.end();
                 }).doOnError(span::recordException);
+    }
+
+    private Span getServerSpan(Tracer tracer,ServerHttpRequest request){
+        return tracer.spanBuilder(request.getPath().toString())
+                .setNoParent()
+                .setAttribute(SemanticAttributes.HTTP_METHOD,request.getMethod().name())
+                .startSpan();
     }
 }

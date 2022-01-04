@@ -32,30 +32,36 @@ public class TracingServerFilter implements GlobalFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
-        ServerHttpRequest request = exchange.getRequest();
         Tracer tracer = openTelemetry.getTracer(applicationName);
+        Span clientSpan = getClientSpan(tracer, exchange);
 
-        URI roteUri = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
-        Span span = tracer.spanBuilder(roteUri.getPath())
-                .setSpanKind(SpanKind.CLIENT)
-                .setAttribute(SemanticAttributes.HTTP_METHOD, request.getMethod().name())
-                .startSpan();
-
-        Scope scope = span.makeCurrent();
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        TextMapPropagator textMapPropagator = openTelemetry.getPropagators().getTextMapPropagator();
-        textMapPropagator.inject(Context.current(), httpHeaders, HttpHeaders::add);
-        exchange.getRequest().mutate()
-                .headers(headers -> headers.addAll(httpHeaders))
-                .build();
-        exchange.mutate().request(request).build();
+        Scope scope = clientSpan.makeCurrent();
+        inject(exchange);
 
         return chain.filter(exchange)
                 .then(Mono.fromRunnable(() -> {
                     scope.close();
-                    span.end();
+                    clientSpan.end();
                 }));
+    }
+
+    private void inject(ServerWebExchange serverWebExchange) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        TextMapPropagator textMapPropagator = openTelemetry.getPropagators().getTextMapPropagator();
+        textMapPropagator.inject(Context.current(), httpHeaders, HttpHeaders::add);
+        ServerHttpRequest request = serverWebExchange.getRequest().mutate()
+                .headers(headers -> headers.addAll(httpHeaders))
+                .build();
+        serverWebExchange.mutate().request(request).build();
+    }
+
+    private Span getClientSpan(Tracer tracer,ServerWebExchange serverWebExchange){
+        ServerHttpRequest request = serverWebExchange.getRequest();
+        URI roteUri = serverWebExchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
+        assert roteUri != null;
+        return tracer.spanBuilder(roteUri.getPath())
+                .setSpanKind(SpanKind.CLIENT)
+                .setAttribute(SemanticAttributes.HTTP_METHOD,request.getMethod().name())
+                .startSpan();
     }
 }
