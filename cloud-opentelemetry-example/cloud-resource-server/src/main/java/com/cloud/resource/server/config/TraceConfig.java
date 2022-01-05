@@ -34,25 +34,8 @@ public class TraceConfig {
      */
     @Bean
     public OpenTelemetry initOpenTelemetry() {
-
-        // 设置导出器
-//        OtlpGrpcSpanExporter spanExporter =
-//                OtlpGrpcSpanExporter.builder()
-//                        .setEndpoint("http://192.168.0.229:4317")
-//                        .setTimeout(10, TimeUnit.SECONDS)
-//                        .build();
-//        BatchSpanProcessor spanProcessor =
-//                BatchSpanProcessor.builder(spanExporter)
-//                        .setScheduleDelay(100, TimeUnit.MILLISECONDS)
-//                        .build();
-
-//        Resource serviceNameResource =
-//                Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
-
-//        Resource resource = AutoConfiguredOpenTelemetrySdk.initialize().getResource();
-
         // span批量处理器
-        SpanProcessor spanProcessor = getZipkinProcessor();
+        SpanProcessor spanProcessor = getOtlpProcessor();
         Resource serviceNameResource = Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()

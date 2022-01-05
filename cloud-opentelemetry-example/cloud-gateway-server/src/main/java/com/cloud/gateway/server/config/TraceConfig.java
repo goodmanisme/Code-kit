@@ -34,25 +34,8 @@ public class TraceConfig {
      */
     @Bean
     public OpenTelemetry initOpenTelemetry() {
-
-        // 设置导出器
-//        OtlpGrpcSpanExporter spanExporter =
-//                OtlpGrpcSpanExporter.builder()
-//                        .setEndpoint("http://192.168.0.229:4317")
-//                        .setTimeout(10, TimeUnit.SECONDS)
-//                        .build();
-//        BatchSpanProcessor spanProcessor =
-//                BatchSpanProcessor.builder(spanExporter)
-//                        .setScheduleDelay(100, TimeUnit.MILLISECONDS)
-//                        .build();
-
-//        Resource serviceNameResource =
-//                Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
-
-//        Resource resource = AutoConfiguredOpenTelemetrySdk.initialize().getResource();
-
         // span批量处理器
-        SpanProcessor spanProcessor = getZipkinProcessor();
+        SpanProcessor spanProcessor = getOtlpProcessor();
         Resource serviceNameResource = Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, applicationName));
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
@@ -71,6 +54,12 @@ public class TraceConfig {
     }
 
 
+    /**
+     * otlp统一导出协议，默认查找配置文件配置的后端地址。<br/>
+     * open-telemetry-collector 需部署在与服务同一环境下。<br/>
+     * 也可指定地址通过设置{@code setEndpoint("http://localhost:prot")}
+     * @return SpanProcessor
+     */
     private SpanProcessor getOtlpProcessor() {
         OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
                 .setTimeout(2, TimeUnit.SECONDS)
@@ -80,6 +69,10 @@ public class TraceConfig {
                 .build();
     }
 
+    /**
+     * 自定义zipkin导出器
+     * @return SpanProcessor
+     */
     private SpanProcessor getZipkinProcessor() {
         String host = "192.168.0.229";
         int port = 9411;
