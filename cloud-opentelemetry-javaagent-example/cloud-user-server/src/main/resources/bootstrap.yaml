@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: cloud-user-server
+  cloud:
+    nacos:
+      server-addr: 192.168.0.229:8848
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: public
+      config:
+        namespace: public
+        file-extension: yaml
