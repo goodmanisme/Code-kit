@@ -62,6 +62,7 @@ public class TraceConfig {
      */
     private SpanProcessor getOtlpProcessor() {
         OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder()
+                .setEndpoint("http://192.168.0.229:4317")
                 .setTimeout(2, TimeUnit.SECONDS)
                 .build();
         return BatchSpanProcessor.builder(spanExporter)
