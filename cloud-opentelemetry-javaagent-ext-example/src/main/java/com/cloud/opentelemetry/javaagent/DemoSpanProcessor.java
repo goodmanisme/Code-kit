@@ -22,7 +22,8 @@ public class DemoSpanProcessor implements SpanProcessor {
     The sole purpose of this attribute is to introduce runtime dependency on some external library.
     We need this to demonstrate how extension can use them.
      */
-    span.setAttribute("random", RandomStringUtils.random(10));
+//    span.setAttribute("random", RandomStringUtils.random(10));
+    span.setAttribute("test", "test");
     span.setAttribute("custom", "demo");
   }
 

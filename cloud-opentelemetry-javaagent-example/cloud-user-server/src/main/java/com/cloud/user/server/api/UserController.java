@@ -19,6 +19,16 @@ public class UserController {
         return userService.username();
     }
 
+    @GetMapping("/dbUsername")
+    public String dbUsername() {
+        return userService.dbUsername();
+    }
+
+    @GetMapping("/redisUsername")
+    public String redisUsername() {
+        return userService.redisUsername();
+    }
+
     @GetMapping("/exec")
     public String exec() {
         return age();

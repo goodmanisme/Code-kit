@@ -16,6 +16,7 @@ import java.util.Collection;
 public class DemoSpanExporter implements SpanExporter {
   @Override
   public CompletableResultCode export(Collection<SpanData> spans) {
+    // 这里可以用于导出Span到自定义数据处理后端
     System.out.printf("%d spans exported%n", spans.size());
     return CompletableResultCode.ofSuccess();
   }
