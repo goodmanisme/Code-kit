@@ -27,46 +27,45 @@ public class TraceService extends TraceServiceGrpc.TraceServiceImplBase {
         List<ResourceSpans> resourceSpansList = request.getResourceSpansList();
         resourceSpansList.forEach(resourceSpans -> {
             List<InstrumentationLibrarySpans> instrumentationLibrarySpansList = resourceSpans.getInstrumentationLibrarySpansList();
-            Map<String, String> librarySpans = processInstrumentationLibrarySpans(instrumentationLibrarySpansList);
-            if (!CollectionUtils.isEmpty(librarySpans)) {
-                map.putAll(librarySpans);
-                List<KeyValue> attributesList = resourceSpans.getResource().getAttributesList();
-                Map<String, String> attributes = processAttributes(attributesList);
-                map.putAll(attributes);
-            }
+            List<KeyValue> attributesList = resourceSpans.getResource().getAttributesList();
+            Map<String, String> span = processInstrumentationLibrarySpans(instrumentationLibrarySpansList,attributesList);
+            map.putAll(span);
         });
-        if (CollectionUtils.isEmpty(map)) {
-            responseObserver.onCompleted();
-        } else {
+        if (!CollectionUtils.isEmpty(map)) {
             WebSocketServer.wsServerSet.forEach(ws -> {
                 ws.sendMessage(JSON.toJSONString(map));
             });
-            responseObserver.onCompleted();
         }
+        responseObserver.onCompleted();
     }
 
 
-    private Map<String, String> processInstrumentationLibrarySpans(List<InstrumentationLibrarySpans> librarySpans) {
+    private Map<String, String> processInstrumentationLibrarySpans(List<InstrumentationLibrarySpans> librarySpans,
+                                                                   List<KeyValue> attributesList) {
         Map<String, String> map = new ConcurrentHashMap<>();
         for (InstrumentationLibrarySpans librarySpan : librarySpans) {
             List<Span> spansList = librarySpan.getSpansList();
             for (Span span : spansList) {
-                List<KeyValue> attributesList = span.getAttributesList();
-                for (KeyValue kv : attributesList) {
-                    if ("http.url".equals(kv.getKey())) {
-                        if (kv.getValue().getStringValue().contains("/nacos/v1/cs/configs")) {
-                            continue;
+                for (KeyValue kv : span.getAttributesList()) {
+                    // 过滤nacos的循环监听请求
+                    if (!"http.url".equals(kv.getKey())
+                            && !kv.getValue().getStringValue().contains("/nacos/v1/cs/configs")) {
+                        if ("traceId".equals(kv.getKey())) {
+                            map.put(kv.getKey(), kv.getValue().getStringValue());
                         }
-                    }
-                    if ("traceId".equals(kv.getKey())) {
-                        map.put(kv.getKey(), kv.getValue().getStringValue());
-                    }
-                    if ("spanId".equals(kv.getKey())) {
-                        map.put(kv.getKey(), kv.getValue().getStringValue());
+                        if ("spanId".equals(kv.getKey())) {
+                            map.put(kv.getKey(), kv.getValue().getStringValue());
+                        }
                     }
                 }
             }
         }
+        // 如果当前采集的Tags是空的那么后续的Process则直接丢弃
+        if (CollectionUtils.isEmpty(map)) {
+            return map;
+        }
+        Map<String, String> attributes = processAttributes(attributesList);
+        map.putAll(attributes);
         return map;
     }
 
