@@ -11,3 +11,46 @@ spring:
       config:
         namespace: public
         file-extension: yaml
+  ## 数据源配置项
+  datasource:
+    ##配置使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    ##配置使用pgsql驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ##基本配置  ##&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://127.0.0.1:3306/test?stringtype=unspecified&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 12345678
+    ## druid配置项
+    druid:
+      initialSize: 20
+      minIdle: 20
+      maxActive: 100
+      maxWait: 10000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      validationQuery: select 1
+      validationQueryTimeout: 1
+      keepAlive: true
+      removeAbandoned: true
+      removeAbandonedTimeout: 80
+      logAbandoned: true
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 200
+  ## redis配置项
+  redis:
+    host: 192.168.0.229
+    port: 6379
+## mybatis配置项
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+  configuration:
+    cache-enabled: true
+    default-executor-type: reuse

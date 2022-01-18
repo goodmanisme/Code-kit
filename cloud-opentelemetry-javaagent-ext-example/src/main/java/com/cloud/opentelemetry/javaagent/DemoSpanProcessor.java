@@ -1,11 +1,16 @@
 package com.cloud.opentelemetry.javaagent;
 
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.ContextKey;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * See <a
@@ -23,6 +28,9 @@ public class DemoSpanProcessor implements SpanProcessor {
     We need this to demonstrate how extension can use them.
      */
 //    span.setAttribute("random", RandomStringUtils.random(10));
+//    parentContext.get(ContextKey.named("a"));
+    span.setAttribute("traceId",span.getSpanContext().getTraceId());
+    span.setAttribute("spanId",span.getSpanContext().getSpanId());
     span.setAttribute("test", "test");
     span.setAttribute("custom", "demo");
   }

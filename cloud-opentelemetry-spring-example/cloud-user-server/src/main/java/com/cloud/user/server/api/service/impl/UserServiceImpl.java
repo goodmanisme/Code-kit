@@ -10,4 +10,9 @@ public class UserServiceImpl implements UserService {
     public String username() {
         return "张三";
     }
+
+    @Override
+    public String dbUsername() {
+        return null;
+    }
 }
