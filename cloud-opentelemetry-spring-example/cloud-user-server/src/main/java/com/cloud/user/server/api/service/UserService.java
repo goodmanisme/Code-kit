@@ -5,4 +5,6 @@ public interface UserService {
     String username();
 
     String dbUsername();
+
+    String redisUsername();
 }

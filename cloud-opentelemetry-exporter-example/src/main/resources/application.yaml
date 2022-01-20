@@ -5,3 +5,14 @@ spring:
   application:
     name: opentelemetry-exporter-server
 
+opentelemetry:
+  otlp:
+    trace:
+      span:
+        ignore: true
+        attributes:
+          http.url:
+            - /nacos/v1/cs/configs
+            - /nacos/v1/ns/instance/beat
+            - /nacos/v1/ns/instance/list
+            - /nacos/v1/ns/service/list
