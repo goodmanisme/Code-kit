@@ -33,6 +33,7 @@ public class TracingWebFilter implements WebFilter {
 
         Scope scope = span.makeCurrent();
         exchange.getResponse().getHeaders().add("traceId", span.getSpanContext().getTraceId());
+        System.out.println(">>>>>>traceId:"+span.getSpanContext().getTraceId());
         span.setAttribute("params", request.getQueryParams().toString());
 
         return chain.filter(exchange)

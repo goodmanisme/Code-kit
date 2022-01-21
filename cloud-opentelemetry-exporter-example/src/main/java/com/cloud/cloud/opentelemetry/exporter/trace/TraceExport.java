@@ -22,5 +22,5 @@ public interface TraceExport {
 
     void processInstrumentationLibrarySpans(List<InstrumentationLibrarySpans> instrumentationLibrarySpans);
 
-    void processSpans(List<Span>  spans);
+    void processSpans(List<Span>  spans,String applicationName);
 }

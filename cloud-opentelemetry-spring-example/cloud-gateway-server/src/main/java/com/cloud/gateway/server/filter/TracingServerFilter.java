@@ -36,6 +36,7 @@ public class TracingServerFilter implements GlobalFilter {
         Span clientSpan = getClientSpan(tracer, exchange);
 
         Scope scope = clientSpan.makeCurrent();
+        System.out.println(">>>>>>traceId:"+clientSpan.getSpanContext().getTraceId());
         inject(exchange);
 
         return chain.filter(exchange)

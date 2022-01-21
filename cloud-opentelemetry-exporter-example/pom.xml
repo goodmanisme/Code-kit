@@ -18,6 +18,7 @@
         <java.version>1.8</java.version>
         <armeria.groupId>com.linecorp.armeria</armeria.groupId>
         <armeria.version>1.13.4</armeria.version>
+        <hutool.version>5.1.5</hutool.version>
         <os-maven-plugin.version>1.6.1</os-maven-plugin.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
     </properties>
@@ -65,6 +66,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>
