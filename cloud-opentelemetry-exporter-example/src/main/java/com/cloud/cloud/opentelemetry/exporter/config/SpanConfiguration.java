@@ -1,6 +1,7 @@
 package com.cloud.cloud.opentelemetry.exporter.config;
 
 import io.opentelemetry.proto.common.v1.KeyValue;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import java.util.Map;
 /**
  * @author AGoodMan
  */
+@Component
 public class SpanConfiguration {
 
     @Resource
@@ -19,8 +21,12 @@ public class SpanConfiguration {
     /**
      * 忽略的Span配置
      */
-    private Boolean ignoreSpan(List<KeyValue> kvs) {
+    public Boolean ignoreSpan(List<KeyValue> kvs) {
         Boolean ignore = spanProperties.getIgnore();
+        if (!ignore) return false;
+
+        boolean flag = false;
+
         Map<String, List<String>> attributes = spanProperties.getAttributes();
         if (CollectionUtils.isEmpty(attributes)) {
             return false;
@@ -30,13 +36,13 @@ public class SpanConfiguration {
                 if (entry.getKey().equals(kv.getKey())) {
                     for (String v : entry.getValue()) {
                         if (kv.getValue().getStringValue().contains(v)) {
-                            ignore = true;
+                            flag = true;
                         }
                     }
                 }
             }
         }
-        return ignore;
+        return flag;
     }
 
 }

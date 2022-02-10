@@ -21,6 +21,6 @@ public class SpanProperties {
 
     private Boolean ignore = Boolean.FALSE;
 
-    private Map<String,List<String>>  attributes;
+    private Map<String, List<String>> attributes;
 
 }
